@@ -1,53 +1,136 @@
-import { app, BrowserWindow } from 'electron';
-import path from 'path';
+import { app, BrowserWindow, ipcMain, desktopCapturer } from "electron";
+import { uIOhook } from "uiohook-napi";
+import path from "path";
+import fs from "fs";
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
+if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
 const createWindow = () => {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
   }
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+async function emptyDirectory() {
+  console.log("dirPath", __dirname);
+  const diretoryPath = __dirname.replace(".vite/build", "screenshots");
+  console.log(
+    diretoryPath,
+    "directoryPathdirectoryPathPathPathPathPathPathPath"
+  );
+  if (fs.existsSync(diretoryPath)) {
+    // console.log("dirPath", dirPath);
+    const files = fs.readdirSync(diretoryPath);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+    if (files.length > 0) {
+      files.forEach((file) => {
+        const filePath = path.join(__dirname, file);
+        const isFile = fs.statSync(filePath).isFile();
+        if (isFile) {
+          fs.unlinkSync(filePath);
+        } else {
+          emptyDirectory();
+        }
+      });
+    }
+  }
+}
+
+async function captureScreenshot(source: any) {
+  return await source.thumbnail.toPNG();
+}
+
+async function saveScreenshot(image: any, fileName: string) {
+  const filePath = path.join(
+    __dirname.replace(".vite/build", "screenshots"),
+    fileName
+  );
+
+  fs.writeFileSync(filePath, image);
+  return filePath;
+}
+const userActivity = {
+  keyboardClickCount: 0,
+  mouseClickCount: 0,
+};
+
+async function getScreenShot() {
+  return new Promise((res, rej) => {
+    desktopCapturer
+      .getSources({
+        types: ["window", "screen"],
+        thumbnailSize: { width: 1920, height: 1080 },
+      })
+      .then(async (sources) => {
+        let pathOfImage;
+        let image;
+        for (const source of sources) {
+          if (source.name == "Entire screen") {
+            image = await captureScreenshot(source);
+            const fileName = `screenshot_${Date.now()}.png`;
+            pathOfImage = await saveScreenshot(image, fileName);
+            res(pathOfImage);
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error capturing screenshot:", error);
+      });
+  });
+}
+
+app.on("ready", createWindow);
+app.whenReady().then(() => {
+  uIOhook.start();
+  // emptyDirectory();
+  ipcMain.handle("userActivity", async () => {
+    const screenshot = await getScreenShot();
+    const userActivityWithScreenshot = {
+      screenshot,
+      userActivity: { ...userActivity },
+    };
+    userActivity.keyboardClickCount = 0;
+    userActivity.mouseClickCount = 0;
+    return userActivityWithScreenshot;
+  });
+  ipcMain.on("sentData", async (event, data) => {
+    console.log(data, "input data");
+  });
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+uIOhook.on("keydown", () => {
+  userActivity.keyboardClickCount = userActivity.keyboardClickCount + 1;
+});
+
+uIOhook.on("mouseup", () => {
+  userActivity.mouseClickCount = userActivity.mouseClickCount + 1;
+});
