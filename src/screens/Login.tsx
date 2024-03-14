@@ -14,7 +14,27 @@ import {
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "../types/login";
+import * as Yup from "yup";
+// const validationSchema = Yup.object().shape({
+//   userEmailName: Yup.string()
+//     .email("Please enter a valid email")
+//     .required("Required"),
+//   userPassword: Yup.string()
+//     .matches(
+//       /^(?!\s+$).+$/,
+//       "Password must not contain whitespace or tabs only"
+//     )
+//     .required("Required"),
+// });
 
+const validationSchema = Yup.object().shape({
+  userEmailName: Yup.string()
+    .email("Please enter a valid email")
+    .required("Required"),
+  userPassword: Yup.string()
+    .matches(/^\S+$/, "Password must not contain whitespace or tabs only")
+    .required("Required"),
+});
 const Login = () => {
   const navigate = useNavigate();
   const [userEmailPassword, setUserEmailPassword] = React.useState({
@@ -42,24 +62,24 @@ const Login = () => {
   return (
     <Formik
       initialValues={{ userEmailName: "", userPassword: "" }}
-      validate={(values: LOGIN) => {
-        const errors = {
-          userEmailName: "",
-          password: "",
-        };
-        // if (!values.userEmailName) {
-        //   errors.userEmailName = "Required";
-        // } else if (
-        //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.userEmailName)
-        // ) {
-        //   errors.userEmailName = "Invalid email address";
-        // }
-        // return errors;
-      }}
+      validationSchema={validationSchema}
+      // validate={(values: LOGIN) => {
+      //   const errors = {
+      //     userEmailName: "",
+      //     password: "",
+      //   };
+      //   // if (/^\s*$/.test(values.userPassword)) {
+      //   //   errors.password = "Password can't contain only spaces.";
+      //   // } else if (
+      //   //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.userEmailName)
+      //   // ) {
+      //   //   errors.userEmailName = "Invalid email address";
+      //   // }
+      //   return errors;
+      // }}
       onSubmit={(values, { setSubmitting }) => {
         OnSumbit(values);
         setTimeout(() => {
-          // alert(JSON.stringify(values, null, 2));
           OnSumbit(values);
           setSubmitting(false);
         }, 400);
@@ -111,8 +131,8 @@ const Login = () => {
               <Button colorScheme="teal" mb={8} type="submit">
                 Log In
               </Button>
-              <Text>{errors.userEmailName}</Text>
-              <Text>{errors.userPassword}</Text>
+              <Text color={"red"}>{errors.userEmailName}</Text>
+              <Text color={"red"}>{errors.userPassword}</Text>
               <FormControl display="flex" alignItems="center">
                 <FormLabel htmlFor="dark_mode" mb="0">
                   Enable Dark Mode?

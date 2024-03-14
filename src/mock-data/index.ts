@@ -1,22 +1,143 @@
 export const MOCK_PROJECTS_DATA = [
   {
     id: 1,
-    projectName: "Activity Tracker",
+    project: [
+      {
+        id: 1001,
+        name: "Activity Tracker",
+        summary: "A Cross Platform Desktop Tracker",
+      },
+      {
+        id: 1002,
+        name: "NoteMaker",
+        summary: "A Rich text editor web application",
+      },
+      {
+        id: 1003,
+        name: "Todo",
+        summary: "Mobile application for daily productivity measuring",
+      },
+      {
+        id: 1004,
+        name: "Money Maker",
+        summary: "Forex trading web application",
+      },
+    ],
+    clientName: "Jake Paul",
   },
   {
     id: 2,
-    projectName: "Social Circle",
+    project: [
+      {
+        id: 2001,
+        name: "Social Circle",
+        summary: "A Online Meeting app to meet online",
+      },
+      {
+        id: 2002,
+        name: "Jira",
+        summary: "A task assigning software for organizations",
+      },
+      {
+        id: 2003,
+        name: "Graphics Controller",
+        summary: "An application for controlling the graphics card by Nvidia",
+      },
+      {
+        id: 2004,
+        name: "Whatsapp Bot",
+        summary:
+          "Application for automating your message when you're not available.",
+      },
+    ],
+    clientName: "Mike Tyson",
   },
   {
     id: 3,
-    projectName: "Unity Hub",
+    project: [
+      {
+        id: 3001,
+        name: "Unity Hub",
+        summary: "Game engine for unity games development",
+      },
+      {
+        id: 3002,
+        name: "Unity King",
+        summary: "Generation 5 gaming engine",
+      },
+      {
+        id: 3003,
+        name: "King Maker",
+        summary: "Jumbo jumping game maked by using pygame",
+      },
+      {
+        id: 3004,
+        name: "3D Maker",
+        summary: "An application for 3D visualization of home decoration",
+      },
+    ],
+    clientName: "Brack Obama",
   },
   {
     id: 4,
-    projectName: "Evident command",
+    project: [
+      {
+        id: 4001,
+        name: "Evident Command",
+        summary: "A application for connecting system admin across world",
+      },
+      {
+        id: 4002,
+        name: "Landscape",
+        summary: "Gardening webapp in nextjs",
+      },
+      {
+        id: 4003,
+        name: "Furniture Selecter",
+        summary:
+          "Old furniture refurbishing  as like new one platform application",
+      },
+      {
+        id: 4004,
+        name: "Amaze cars",
+        summary: "Formula one racing cars selling web application",
+      },
+    ],
+    clientName: "Mike Thompson",
   },
   {
     id: 5,
-    projectName: "Civic connect",
+    project: [
+      {
+        id: 5001,
+        name: "Civic connect",
+        summary:
+          "Meet your doctor at your door step with a  single application",
+      },
+      {
+        id: 5002,
+        name: "Next commerce Store",
+        summary: "Ecommerce store for kindergarden kids",
+      },
+      {
+        id: 5003,
+        name: "EComWallet",
+        summary: "Web3 wallet connecting appliaction",
+      },
+      {
+        id: 5004,
+        name: "Blown Actors",
+        summary: "Movie downloader extension",
+      },
+    ],
+    clientName: "Corey Bell",
   },
+];
+
+export const CLIENT_NAME = [
+  "Jake Paul",
+  "Mike Tyson",
+  "Brack Obama",
+  "Mike Thompson",
+  "Corey Bell",
 ];
