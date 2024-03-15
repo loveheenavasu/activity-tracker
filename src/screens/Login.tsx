@@ -22,11 +22,11 @@ const initialValues = {
 };
 const validationSchema = Yup.object().shape({
   userEmailName: Yup.string()
-    .email("Please enter a valid email")
-    .required("Required Email"),
+    .email("*Please enter a valid email")
+    .required("*Required Email"),
   userPassword: Yup.string()
     .matches(/^\S+$/, "Password must not contain whitespace or tabs only")
-    .required("Required"),
+    .required("*Password is required to login"),
 });
 const Login = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Login = () => {
     userEmailName: "",
     userPassword: "",
   });
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
   const formBackground = useColorModeValue("gray.100", "gray.700");
 
   const OnSumbit = (values: LOGIN) => {
@@ -78,41 +78,55 @@ const Login = () => {
               borderRadius={8}
               boxShadow="lg"
             >
-              <Heading mb={6}>Log In</Heading>
+              <Heading mb={6} textAlign={"center"}>
+                Log In
+              </Heading>
               <Input
-                placeholder="johndoe@gmail.com"
+                placeholder="Enter your email"
                 type="email"
-                variant="filled"
-                mb={3}
+                fontSize={"smaller"}
+                mb={2}
                 name="userEmailName"
                 value={values.userEmailName}
                 onChange={handleChange}
               />
+              {
+                <Text color={"red"} fontSize="smaller">
+                  {errors.userEmailName}
+                </Text>
+              }
               <Input
-                placeholder="**********"
+                placeholder="Enter your password"
                 type="password"
-                variant="filled"
-                mb={6}
+                fontSize={"smaller"}
+                mb={2}
                 name="userPassword"
                 onChange={handleChange}
                 value={values.userPassword}
               />
+              {
+                <Text color={"red"} fontSize="smaller">
+                  {errors.userPassword}
+                </Text>
+              }
               <Button colorScheme="teal" mb={8} type="submit">
                 Log In
               </Button>
-              <Text color={"red"}>{errors.userEmailName}</Text>
-              <Text color={"red"}>{errors.userPassword}</Text>
-              <FormControl display="flex" alignItems="center">
+              <Flex alignItems="center">
                 <FormLabel htmlFor="dark_mode" mb="0">
-                  Enable Dark Mode?
+                  {colorMode !== "dark"
+                    ? "Enable Dark Mode?"
+                    : "Disable Dark Mode"}
                 </FormLabel>
                 <Switch
-                  id="dark_mode"
                   colorScheme="teal"
                   size="lg"
+                  border={"1px solid #319795"}
+                  borderRadius={"30px"}
                   onChange={toggleColorMode}
+                  _active={{ border: "none" }}
                 />
-              </FormControl>
+              </Flex>
             </Flex>
           </Flex>
         </form>
