@@ -20,6 +20,9 @@ interface PROJECTPROP {
   isTracking: boolean;
   setIsTracking: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRemarks: React.Dispatch<React.SetStateAction<boolean>>;
+  projectClientrackId: any;
+  setProjectClientTrackId: any;
+  clientId: number;
 }
 let seconds = 0;
 let hours = 0;
@@ -44,7 +47,10 @@ const ProjectCard = ({
   project,
   setIsRemarks,
   isRemarks,
+  setProjectClientTrackId,
+  projectClientrackId,
   isTracking,
+  clientId,
   setIsTracking,
 }: PROJECTPROP) => {
   const [userActivity, setUserActivity] = React.useState({
@@ -69,10 +75,14 @@ const ProjectCard = ({
     };
     setUserActivity(userActivityWithScreenshot);
   };
-  const activateTimer = (id: number) => {
-    if (idForTracking === id) {
+  const activateTimer = (id: number, clientID: number) => {
+    if (projectClientrackId.clientProjectTrackId === id) {
       clearInterval(intervalId);
       clearInterval(timerIntervalId);
+      setProjectClientTrackId({
+        clientTrackId: null,
+        clientProjectTrackId: null,
+      });
       setIdForTracking(null);
       setTimeTracked("00:00:00");
       setIsTracking(false);
@@ -80,6 +90,10 @@ const ProjectCard = ({
       seconds = 0;
       minutes = 0;
       hours = 0;
+      setProjectClientTrackId({
+        clientTrackId: clientID,
+        clientProjectTrackId: id,
+      });
       setIdForTracking(id);
       setIsTracking(true);
       const newIntervalId = setInterval(() => {
@@ -95,6 +109,11 @@ const ProjectCard = ({
     }
     setIsRemarks(!isRemarks);
   };
+
+  console.log(
+    "projectClientrackId.clientTrackId",
+    projectClientrackId.clientTrackId
+  );
   return (
     <>
       {project?.map((project: any) => {
@@ -121,14 +140,18 @@ const ProjectCard = ({
                   color={"#FFFFFF"}
                   _hover={{ color: "none" }}
                   size="md"
-                  onClick={() => activateTimer(project.id)}
+                  onClick={() => activateTimer(project.id, clientId)}
                   isDisabled={
-                    idForTracking !== null && idForTracking !== project.id
+                    projectClientrackId.clientProjectTrackId !== null &&
+                    projectClientrackId.clientProjectTrackId !== project.id &&
+                    projectClientrackId.clientTrackId !== clientId
                       ? true
                       : false
                   }
                 >
-                  {project.id === idForTracking ? "Stop" : "Track"}
+                  {project.id === projectClientrackId.clientProjectTrackId
+                    ? "Stop"
+                    : "Track"}
                 </Button>
                 )
               </HStack>

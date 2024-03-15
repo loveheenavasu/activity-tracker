@@ -17,6 +17,10 @@ import ProjectCard from "../components/ProjectCard";
 const ProjectsSummary = () => {
   const [remarks, setRemarks] = React.useState("");
   const [isTracking, setIsTracking] = React.useState(false);
+  const [projectTClientrackId, setProjectClientTrackId] = React.useState({
+    clientTrackId: null,
+    clientProjectTrackId: null,
+  });
   const [isRemarks, setIsRemarks] = React.useState(false);
   const handleInutChange = (e: any) => {
     setRemarks(e.target.value);
@@ -47,6 +51,9 @@ const ProjectsSummary = () => {
                     return (
                       <>
                         <ProjectCard
+                          clientId={item.clientId}
+                          projectClientrackId={projectTClientrackId}
+                          setProjectClientTrackId={setProjectClientTrackId}
                           setIsTracking={setIsTracking}
                           isTracking={isTracking}
                           project={projectData.project}
