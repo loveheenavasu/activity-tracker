@@ -9,6 +9,7 @@ import {
   HStack,
   Button,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 interface PROJECTPROP {
@@ -58,7 +59,7 @@ const ProjectCard = ({
     keyboardClickCount: 0,
     mouseClickCount: 0,
   });
-  const [idForTracking, setIdForTracking] = React.useState(null);
+  const toast = useToast();
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
@@ -67,7 +68,6 @@ const ProjectCard = ({
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
     const newPath = activity?.screenshot.split("tracker-desktop")[1];
-    console.log(newPath, "newPathnewPAth");
     const userActivityWithScreenshot = {
       screenshot: newPath,
       keyboardClickCount: activity.keyboardClickCount,
@@ -83,7 +83,6 @@ const ProjectCard = ({
         clientTrackId: null,
         clientProjectTrackId: null,
       });
-      setIdForTracking(null);
       setTimeTracked("00:00:00");
       setIsTracking(false);
       setUserActivity({
@@ -99,7 +98,13 @@ const ProjectCard = ({
         clientTrackId: clientID,
         clientProjectTrackId: id,
       });
-      setIdForTracking(id);
+      toast({
+        position: "top-right",
+        description: "Tracker started successfully",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
       setIsTracking(true);
       const newIntervalId = setInterval(() => {
         trackUserActivity();
