@@ -135,9 +135,24 @@ export const MOCK_PROJECTS_DATA = [
 ];
 
 export const CLIENT_NAME = [
-  "Jake Paul",
-  "Mike Tyson",
-  "Brack Obama",
-  "Mike Thompson",
-  "Corey Bell",
+  {
+    clientId: 1,
+    client_name: "Jake Paul",
+  },
+  {
+    clientId: 2,
+    client_name: "Mike Tyson",
+  },
+  {
+    clientId: 3,
+    client_name: "Brack Obama",
+  },
+  {
+    clientId: 4,
+    client_name: "Corey Bell",
+  },
+  {
+    clientId: 5,
+    client_name: "Pannu Khalsa",
+  },
 ];

@@ -8,6 +8,7 @@ import {
   Text,
   HStack,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import React from "react";
 interface PROJECTPROP {
@@ -16,6 +17,8 @@ interface PROJECTPROP {
     name: string;
   }[];
   isRemarks: boolean;
+  isTracking: boolean;
+  setIsTracking: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRemarks: React.Dispatch<React.SetStateAction<boolean>>;
 }
 let seconds = 0;
@@ -37,7 +40,13 @@ function formatTime() {
   const formattedSeconds = seconds.toString().padStart(2, "0");
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
-const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
+const ProjectCard = ({
+  project,
+  setIsRemarks,
+  isRemarks,
+  isTracking,
+  setIsTracking,
+}: PROJECTPROP) => {
   const [userActivity, setUserActivity] = React.useState({
     screenshot: "",
     keyboardClickCount: 0,
@@ -66,11 +75,13 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
       clearInterval(timerIntervalId);
       setIdForTracking(null);
       setTimeTracked("00:00:00");
+      setIsTracking(false);
     } else {
       seconds = 0;
       minutes = 0;
       hours = 0;
       setIdForTracking(id);
+      setIsTracking(true);
       const newIntervalId = setInterval(() => {
         trackUserActivity();
       }, 10000 * 2);
@@ -88,7 +99,16 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
     <>
       {project?.map((project: any) => {
         return (
-          <Card>
+          <Card
+            style={{
+              WebkitBoxShadow: "15px 17px 5px 0px rgba(227,223,227,1)",
+              boxShadow: "15px 17px 5px 0px rgba(227,223,227,1)",
+              borderRadius: "5px",
+              border: "1px solid #DAE0E2",
+              marginBottom: "1rem",
+              maxWidth: "100%",
+            }}
+          >
             <CardHeader>
               <HStack justifyContent={"space-between"}>
                 <Heading size="md">{project.name}</Heading>
@@ -98,6 +118,7 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
                 (
                 <Button
                   bg={"#319795"}
+                  color={"#FFFFFF"}
                   _hover={{ color: "none" }}
                   size="md"
                   onClick={() => activateTimer(project.id)}
@@ -113,14 +134,26 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
               </HStack>
             </CardHeader>
             <CardBody>
-              <Stack>
-                <Heading size="xs" textTransform="uppercase">
-                  Summary
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                  {project.summary}
-                </Text>
-              </Stack>
+              <HStack justifyContent="space-between" width={"100%"}>
+                <Stack>
+                  <Heading size="xs" textTransform="uppercase">
+                    Summary
+                  </Heading>
+                  <Text pt="2" fontSize="sm">
+                    {project.summary}
+                  </Text>
+                </Stack>
+                {project.id === idForTracking && userActivity.screenshot && (
+                  <Image
+                    boxSize="80px"
+                    objectFit="cover"
+                    m={"auto"}
+                    mb={"5"}
+                    src={userActivity.screenshot}
+                    alt="Dan Abramov"
+                  />
+                )}
+              </HStack>
             </CardBody>
             <Divider />
           </Card>
