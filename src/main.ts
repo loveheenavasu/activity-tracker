@@ -29,14 +29,8 @@ const createWindow = () => {
 };
 
 async function emptyDirectory() {
-  console.log("dirPath", __dirname);
   const diretoryPath = __dirname.replace(".vite/build", "screenshots");
-  console.log(
-    diretoryPath,
-    "directoryPathdirectoryPathPathPathPathPathPathPath"
-  );
   if (fs.existsSync(diretoryPath)) {
-    // console.log("dirPath", dirPath);
     const files = fs.readdirSync(diretoryPath);
 
     if (files.length > 0) {

@@ -15,22 +15,15 @@ import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "../types/login";
 import * as Yup from "yup";
-// const validationSchema = Yup.object().shape({
-//   userEmailName: Yup.string()
-//     .email("Please enter a valid email")
-//     .required("Required"),
-//   userPassword: Yup.string()
-//     .matches(
-//       /^(?!\s+$).+$/,
-//       "Password must not contain whitespace or tabs only"
-//     )
-//     .required("Required"),
-// });
 
+const initialValues = {
+  userEmailName: "",
+  userPassword: "",
+};
 const validationSchema = Yup.object().shape({
   userEmailName: Yup.string()
     .email("Please enter a valid email")
-    .required("Required"),
+    .required("Required Email"),
   userPassword: Yup.string()
     .matches(/^\S+$/, "Password must not contain whitespace or tabs only")
     .required("Required"),
@@ -44,43 +37,20 @@ const Login = () => {
   const { toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue("gray.100", "gray.700");
 
-  const ValueChange = (e: any) => {
-    setUserEmailPassword({
-      ...userEmailPassword,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const OnSumbit = (values: LOGIN) => {
     setUserEmailPassword({
       userEmailName: values.userEmailName,
       userPassword: values.userPassword,
     });
-    console.log(userEmailPassword, "userEmailPassworduserEmailPassword");
     navigate("ProjectsSummary");
   };
   return (
     <Formik
-      initialValues={{ userEmailName: "", userPassword: "" }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
-      // validate={(values: LOGIN) => {
-      //   const errors = {
-      //     userEmailName: "",
-      //     password: "",
-      //   };
-      //   // if (/^\s*$/.test(values.userPassword)) {
-      //   //   errors.password = "Password can't contain only spaces.";
-      //   // } else if (
-      //   //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.userEmailName)
-      //   // ) {
-      //   //   errors.userEmailName = "Invalid email address";
-      //   // }
-      //   return errors;
-      // }}
       onSubmit={(values, { setSubmitting }) => {
         OnSumbit(values);
         setTimeout(() => {
-          OnSumbit(values);
           setSubmitting(false);
         }, 400);
       }}
@@ -101,9 +71,6 @@ const Login = () => {
             justifyContent="center"
             flexDirection={"column"}
           >
-            {/* <Text as="h2" mb="4" fontSize="2rem">
-              Login to track Project Status
-            </Text> */}
             <Flex
               flexDirection="column"
               bg={formBackground}
@@ -118,7 +85,8 @@ const Login = () => {
                 variant="filled"
                 mb={3}
                 name="userEmailName"
-                onChange={ValueChange}
+                value={values.userEmailName}
+                onChange={handleChange}
               />
               <Input
                 placeholder="**********"
@@ -126,7 +94,8 @@ const Login = () => {
                 variant="filled"
                 mb={6}
                 name="userPassword"
-                onChange={ValueChange}
+                onChange={handleChange}
+                value={values.userPassword}
               />
               <Button colorScheme="teal" mb={8} type="submit">
                 Log In

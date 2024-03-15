@@ -23,12 +23,10 @@ const ProjectsSummary = () => {
   const CLIENT_PROJECTS = MOCK_PROJECTS_DATA.filter((client: any) =>
     client.clientName === clientName ? client.project : ""
   );
-  console.log("CLIENT_PROJECTSCLIENT_PROJECTS", CLIENT_PROJECTS[0]?.project);
   const handleInutChange = (e: any) => {
     setRemarks(e.target.value);
   };
   const selectClientHandler = (e: any) => {
-    console.log("e.target.value", e.target.value);
     setClientName(e.target.value);
   };
   return (

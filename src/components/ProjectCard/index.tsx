@@ -38,7 +38,6 @@ function formatTime() {
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
-  console.log(project, "projectprojectproject");
   const [userActivity, setUserActivity] = React.useState({
     screenshot: "",
     keyboardClickCount: 0,
@@ -48,7 +47,6 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
-  //   console.log("idForTracking === project.id", idForTracking, project);
 
   const trackUserActivity = async () => {
     const activity = await window.electronAPI.getUserActivity();
@@ -61,7 +59,6 @@ const ProjectCard = ({ project, setIsRemarks, isRemarks }: PROJECTPROP) => {
       mouseClickCount: activity.mouseClickCount,
     };
     setUserActivity(userActivityWithScreenshot);
-    console.log(userActivity, "trackUserActivityActivity");
   };
   const activateTimer = (id: number) => {
     if (idForTracking === id) {
