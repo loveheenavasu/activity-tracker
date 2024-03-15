@@ -86,6 +86,11 @@ const ProjectCard = ({
       setIdForTracking(null);
       setTimeTracked("00:00:00");
       setIsTracking(false);
+      setUserActivity({
+        screenshot: "",
+        keyboardClickCount: 0,
+        mouseClickCount: 0,
+      });
     } else {
       seconds = 0;
       minutes = 0;
@@ -110,10 +115,6 @@ const ProjectCard = ({
     setIsRemarks(!isRemarks);
   };
 
-  console.log(
-    "projectClientrackId.clientTrackId",
-    projectClientrackId.clientTrackId
-  );
   return (
     <>
       {project?.map((project: any) => {
@@ -131,7 +132,7 @@ const ProjectCard = ({
             <CardHeader>
               <HStack justifyContent={"space-between"}>
                 <Heading size="md">{project.name}</Heading>
-                {project.id === idForTracking && (
+                {project.id === projectClientrackId.clientProjectTrackId && (
                   <Text align={"center"}>{timeTracked}</Text>
                 )}
                 (
@@ -143,8 +144,8 @@ const ProjectCard = ({
                   onClick={() => activateTimer(project.id, clientId)}
                   isDisabled={
                     projectClientrackId.clientProjectTrackId !== null &&
-                    projectClientrackId.clientProjectTrackId !== project.id &&
-                    projectClientrackId.clientTrackId !== clientId
+                    (projectClientrackId.clientProjectTrackId !== project.id ||
+                      projectClientrackId.clientTrackId !== clientId)
                       ? true
                       : false
                   }
@@ -166,16 +167,17 @@ const ProjectCard = ({
                     {project.summary}
                   </Text>
                 </Stack>
-                {project.id === idForTracking && userActivity.screenshot && (
-                  <Image
-                    boxSize="80px"
-                    objectFit="cover"
-                    m={"auto"}
-                    mb={"5"}
-                    src={userActivity.screenshot}
-                    alt="Dan Abramov"
-                  />
-                )}
+                {project.id === projectClientrackId.clientProjectTrackId &&
+                  userActivity.screenshot && (
+                    <Image
+                      boxSize="80px"
+                      objectFit="cover"
+                      m={"auto"}
+                      mb={"5"}
+                      src={userActivity.screenshot}
+                      alt="Dan Abramov"
+                    />
+                  )}
               </HStack>
             </CardBody>
             <Divider />
