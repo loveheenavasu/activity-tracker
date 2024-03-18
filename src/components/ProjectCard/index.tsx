@@ -70,13 +70,15 @@ const ProjectCard = ({
     const newPath = activity?.screenshot.split("tracker-desktop")[1];
     const userActivityWithScreenshot = {
       screenshot: newPath,
-      keyboardClickCount: activity.keyboardClickCount,
-      mouseClickCount: activity.mouseClickCount,
+      keyboardClickCount: activity.userActivity.keyboardClickCount,
+      mouseClickCount: activity.userActivity.mouseClickCount,
     };
     setUserActivity(userActivityWithScreenshot);
+    await window.electronAPI.resetData();
   };
-  const activateTimer = (id: number, clientID: number) => {
+  const activateTimer = async (id: number, clientID: number) => {
     if (projectClientrackId.clientProjectTrackId === id) {
+      await window.electronAPI.resetData();
       clearInterval(intervalId);
       clearInterval(timerIntervalId);
       setProjectClientTrackId({

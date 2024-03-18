@@ -92,9 +92,9 @@ async function getScreenShot() {
 
 app.on("ready", createWindow);
 app.whenReady().then(() => {
-  uIOhook.start();
   // emptyDirectory();
   ipcMain.handle("userActivity", async () => {
+    uIOhook.start();
     const screenshot = await getScreenShot();
     const userActivityWithScreenshot = {
       screenshot,
@@ -104,8 +104,9 @@ app.whenReady().then(() => {
     userActivity.mouseClickCount = 0;
     return userActivityWithScreenshot;
   });
-  ipcMain.on("sentData", async (event, data) => {
-    console.log(data, "input data");
+  ipcMain.handle("resetUserActivity", async () => {
+    userActivity.keyboardClickCount = 0;
+    userActivity.mouseClickCount = 0;
   });
 });
 
@@ -120,11 +121,14 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
 uIOhook.on("keydown", () => {
   userActivity.keyboardClickCount = userActivity.keyboardClickCount + 1;
+  console.log(
+    userActivity.keyboardClickCount,
+    "userActivity.keyboardClickCount"
+  );
 });
-
-uIOhook.on("mouseup", () => {
+uIOhook.on("click", () => {
   userActivity.mouseClickCount = userActivity.mouseClickCount + 1;
+  console.log(userActivity.mouseClickCount, "userActivity.mouseClickCount");
 });

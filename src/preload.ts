@@ -1,7 +1,8 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  sentData: async (data: any) => ipcRenderer.send("sentData", data),
+  resetData: async (data: any) =>
+    ipcRenderer.invoke("resetUserActivity", data).then(),
   getUserActivity: async () =>
     ipcRenderer
       .invoke("userActivity")

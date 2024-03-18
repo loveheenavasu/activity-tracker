@@ -16,7 +16,7 @@ declare global {
 
   interface Window {
     electronAPI: {
-      sentData: (data: any) => Promise<void>;
+      resetData: () => Promise<void>;
       trackUserActivity: (cb: (data: any) => void) => Promise<void>;
       getUserActivity: () => Promise<any>;
       userActivity: () => Promise<any>;
