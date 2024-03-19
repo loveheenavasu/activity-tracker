@@ -11,7 +11,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 400,
     height: 600,
-    // resizable: false,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -19,16 +19,7 @@ const createWindow = () => {
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-    console.log(
-      "MAIN_WINDOW_VITE_DEV_SERVER_URL",
-      MAIN_WINDOW_VITE_DEV_SERVER_URL
-    );
   } else {
-    console.log("MAIN_WINDOW_VITE_NAME", MAIN_WINDOW_VITE_NAME);
-    // mainWindow.loadFile(
-    //   path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-    //   { hash: "/" }
-    // );
     mainWindow.loadFile(
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     );

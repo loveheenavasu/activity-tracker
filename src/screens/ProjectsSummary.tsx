@@ -80,11 +80,10 @@ const ProjectsSummary = () => {
               <Accordion
                 allowMultiple
                 width={"100%"}
-                mt="5"
-                mb="2"
+                mt="2"
                 _last={{ marginBottom: "5" }}
               >
-                <AccordionItem>
+                <AccordionItem borderWidth="0.063rem" borderRadius={"8px"}>
                   <h2>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
@@ -119,7 +118,7 @@ const ProjectsSummary = () => {
           })
         ) : projectsBySearchingClient.length > 0 ? (
           <Accordion allowMultiple width={"100%"} mt="10">
-            <AccordionItem>
+            <AccordionItem borderWidth="0.063rem" borderRadius={"8px"}>
               <h2>
                 <AccordionButton>
                   <Box as="span" flex="1" textAlign="left">
@@ -128,7 +127,7 @@ const ProjectsSummary = () => {
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={4}>
+              <AccordionPanel>
                 {projectsBySearchingClient.map((project) => {
                   return (
                     <ProjectCard

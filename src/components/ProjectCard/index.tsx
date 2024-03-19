@@ -10,6 +10,7 @@ import {
   Image,
   useToast,
   Textarea,
+  Divider,
 } from "@chakra-ui/react";
 import React from "react";
 interface PROJECTPROP {
@@ -28,7 +29,7 @@ interface PROJECTPROP {
 let seconds = 0;
 let hours = 0;
 let minutes = 0;
-let formatime: any;
+let formatime: string;
 function formatTime() {
   seconds++;
   if (seconds >= 59) {
@@ -63,7 +64,10 @@ const ProjectCard = ({
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
-
+  console.log(
+    "data for tracking from local storage",
+    localStorage.getItem(`${projectClientrackId.clientProjectTrackId}`)
+  );
   const trackUserActivity = async () => {
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
@@ -78,6 +82,7 @@ const ProjectCard = ({
   };
   const activateTimer = async (id: number, clientID: number) => {
     if (projectClientrackId.clientProjectTrackId === id) {
+      localStorage.setItem(`${id}`, timeTracked);
       await window.electronAPI.resetData();
       clearInterval(intervalId);
       clearInterval(timerIntervalId);
@@ -139,11 +144,7 @@ const ProjectCard = ({
           >
             <CardHeader>
               <HStack justifyContent={"space-between"}>
-                <Heading size="md">{project.name}</Heading>
-                {project.id === projectClientrackId.clientProjectTrackId && (
-                  <Text align={"center"}>{timeTracked}</Text>
-                )}
-                (
+                <Heading size="md">{project.name}</Heading>(
                 <Button
                   bg={"#319795"}
                   color={"#FFFFFF"}
@@ -166,6 +167,13 @@ const ProjectCard = ({
               </HStack>
             </CardHeader>
             <CardBody>
+              <HStack width={"100%"} justifyContent={"space-between"}>
+                <Text fontSize={".9rem"}>Time Tracked:</Text>
+                {project.id === projectClientrackId.clientProjectTrackId && (
+                  <Text align={"center"}>{timeTracked || "00:00:00"}</Text>
+                )}
+              </HStack>
+              <Divider />
               <HStack justifyContent="space-between">
                 <Stack>
                   <Heading size="xs" textTransform="uppercase">
