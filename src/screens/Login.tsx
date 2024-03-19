@@ -42,6 +42,7 @@ const Login = () => {
       userEmailName: values.userEmailName,
       userPassword: values.userPassword,
     });
+    localStorage.setItem("userEmail", values.userEmailName);
     navigate("ProjectsSummary");
   };
   return (

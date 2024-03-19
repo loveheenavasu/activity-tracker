@@ -4,12 +4,12 @@ import {
   Heading,
   CardBody,
   Stack,
-  Divider,
   Text,
   HStack,
   Button,
   Image,
   useToast,
+  Textarea,
 } from "@chakra-ui/react";
 import React from "react";
 interface PROJECTPROP {
@@ -129,8 +129,8 @@ const ProjectCard = ({
         return (
           <Card
             style={{
-              WebkitBoxShadow: "15px 17px 5px 0px rgba(227,223,227,1)",
-              boxShadow: "15px 17px 5px 0px rgba(227,223,227,1)",
+              WebkitBoxShadow: "15px 10px 6px 0 rgba(227,223,227,1)",
+              boxShadow: "15px 10px 6px 0 rgba(227,223,227,1)",
               borderRadius: "5px",
               border: "1px solid #DAE0E2",
               marginBottom: "1rem",
@@ -166,7 +166,7 @@ const ProjectCard = ({
               </HStack>
             </CardHeader>
             <CardBody>
-              <HStack justifyContent="space-between" width={"100%"}>
+              <HStack justifyContent="space-between">
                 <Stack>
                   <Heading size="xs" textTransform="uppercase">
                     Summary
@@ -187,8 +187,24 @@ const ProjectCard = ({
                     />
                   )}
               </HStack>
+              <Textarea
+                // value={remarks}
+                // onChange={handleInutChange}
+                maxW={"100%"}
+                maxH={"5%"}
+                isDisabled={
+                  projectClientrackId.clientProjectTrackId !== null &&
+                  (projectClientrackId.clientProjectTrackId !== project.id ||
+                    projectClientrackId.clientTrackId !== clientId)
+                    ? true
+                    : false
+                }
+                placeholder="Enter Remarks Here"
+                size="xs"
+                mt="2"
+                resize={"none"}
+              />
             </CardBody>
-            <Divider />
           </Card>
         );
       })}
