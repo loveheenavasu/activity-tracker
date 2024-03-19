@@ -2,7 +2,8 @@
   "name": "tracker-desktop",
   "productName": "tracker-desktop",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "author": "zestgeek-22",
+  "description": "tracker electron app",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -31,7 +32,6 @@
     "vite": "^5.0.12"
   },
   "keywords": [],
-  "author": "zestgeek-22",
   "license": "MIT",
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",

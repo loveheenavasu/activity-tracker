@@ -100,6 +100,7 @@ const ProjectCard = ({
         clientTrackId: clientID,
         clientProjectTrackId: id,
       });
+      await window.electronAPI.resetData();
       toast({
         position: "top-right",
         description: "Tracker started successfully",

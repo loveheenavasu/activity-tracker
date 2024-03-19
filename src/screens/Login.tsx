@@ -67,11 +67,14 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <Flex
             h="100vh"
+            w={{ base: "100vw", sm: "100vw" }}
             alignItems="center"
             justifyContent="center"
             flexDirection={"column"}
           >
             <Flex
+              w={{ base: "100%", sm: "100%", md: "500px" }}
+              h={{ base: "100%", sm: "100%", md: "500px" }}
               flexDirection="column"
               bg={formBackground}
               p={12}
@@ -109,10 +112,13 @@ const Login = () => {
                   {errors.userPassword}
                 </Text>
               }
-              <Button colorScheme="teal" mb={8} type="submit">
+              <Button colorScheme="teal" mb={6} type="submit">
                 Log In
               </Button>
-              <Flex alignItems="center">
+              <Text fontSize={".9rem"} color={"#2C3335"}>
+                Forgot Password ?
+              </Text>
+              {/* <Flex alignItems="center">
                 <FormLabel htmlFor="dark_mode" mb="0">
                   {colorMode !== "dark"
                     ? "Enable Dark Mode?"
@@ -126,7 +132,7 @@ const Login = () => {
                   onChange={toggleColorMode}
                   _active={{ border: "none" }}
                 />
-              </Flex>
+              </Flex> */}
             </Flex>
           </Flex>
         </form>

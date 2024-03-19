@@ -6,11 +6,12 @@ import fs from "fs";
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
-
+console.log("MAIN_WINDOW_VITE_NAME", MAIN_WINDOW_VITE_NAME);
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 400,
     height: 600,
+    // resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -18,34 +19,43 @@ const createWindow = () => {
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+    console.log(
+      "MAIN_WINDOW_VITE_DEV_SERVER_URL",
+      MAIN_WINDOW_VITE_DEV_SERVER_URL
+    );
   } else {
+    console.log("MAIN_WINDOW_VITE_NAME", MAIN_WINDOW_VITE_NAME);
+    // mainWindow.loadFile(
+    //   path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+    //   { hash: "/" }
+    // );
     mainWindow.loadFile(
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     );
   }
-
+  process.traceProcessWarnings = true;
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
 
-async function emptyDirectory() {
-  const diretoryPath = __dirname.replace(".vite/build", "screenshots");
-  if (fs.existsSync(diretoryPath)) {
-    const files = fs.readdirSync(diretoryPath);
+// async function emptyDirectory() {
+//   const diretoryPath = __dirname.replace(".vite/build", "screenshots");
+//   if (fs.existsSync(diretoryPath)) {
+//     const files = fs.readdirSync(diretoryPath);
 
-    if (files.length > 0) {
-      files.forEach((file) => {
-        const filePath = path.join(__dirname, file);
-        const isFile = fs.statSync(filePath).isFile();
-        if (isFile) {
-          fs.unlinkSync(filePath);
-        } else {
-          emptyDirectory();
-        }
-      });
-    }
-  }
-}
+//     if (files.length > 0) {
+//       files.forEach((file) => {
+//         const filePath = path.join(__dirname, file);
+//         const isFile = fs.statSync(filePath).isFile();
+//         if (isFile) {
+//           fs.unlinkSync(filePath);
+//         } else {
+//           emptyDirectory();
+//         }
+//       });
+//     }
+//   }
+// }
 
 async function captureScreenshot(source: any) {
   return await source.thumbnail.toPNG();
