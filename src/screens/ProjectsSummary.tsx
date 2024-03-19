@@ -5,9 +5,15 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Flex,
+  Button,
   HStack,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
+  Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -57,8 +63,8 @@ const ProjectsSummary = () => {
     }
   };
   return (
-    <Box h={"100vh"}>
-      <Flex
+    <Box position={"relative"} minH={"100vh"}>
+      <Stack
         width={"100vw"}
         flexDirection="column"
         alignItems="center"
@@ -71,7 +77,13 @@ const ProjectsSummary = () => {
         {search.length === 0 ? (
           CLIENT_NAME.map((item: { clientId: number; client_name: string }) => {
             return (
-              <Accordion allowMultiple width={"100%"} mt="5">
+              <Accordion
+                allowMultiple
+                width={"100%"}
+                mt="5"
+                mb="2"
+                _last={{ marginBottom: "5" }}
+              >
                 <AccordionItem>
                   <h2>
                     <AccordionButton>
@@ -139,21 +151,58 @@ const ProjectsSummary = () => {
             No Client Found
           </Text>
         )}
-        {!isTracking && projectsBySearchingClient.length > 0 && (
-          <Text as="h4" align={"center"} fontSize={"1.25rem"} mt="1rem">
+        {/* {!isTracking && projectsBySearchingClient.length > 0 && (
+          <Text
+            as="h4"
+            align={"center"}
+            fontSize={"1.25rem"}
+            mt="1rem"
+            mb="auto"
+          >
             You have not started tracking yet
           </Text>
-        )}
-      </Flex>
-      <HStack position={"absolute"} bottom={0} justifyContent={"space-between"}>
-        <IconButton
-          icon={<IoSettingsOutline />}
-          aria-label={"back-button"}
-          bg="none"
-          _hover={{ background: "none" }}
-          onClick={() => backNavigationHandler()}
-        />
-        <Text>{userEmail}</Text>
+        )} */}
+      </Stack>
+      <HStack
+        position={"absolute"}
+        bottom={0}
+        justifyContent={"space-between"}
+        alignSelf={"end"}
+        left={2}
+      >
+        <Menu>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                isActive={isOpen}
+                as={Button}
+                px={5}
+                py={2}
+                transition="all 0.2s"
+                bg={"none"}
+                _hover={{ bg: "none" }}
+                _expanded={{ bg: "none" }}
+                _focus={{ boxShadow: "none" }}
+              >
+                <IconButton
+                  icon={<IoSettingsOutline />}
+                  aria-label={"back-button"}
+                  bg="none"
+                  _hover={{ background: "none" }}
+                />
+              </MenuButton>
+              <Portal>
+                <MenuList>
+                  <MenuItem>Advance settings</MenuItem>
+                  <MenuItem onClick={() => backNavigationHandler()}>
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Portal>
+            </>
+          )}
+        </Menu>
+        <Text color={"#2F363F"}>{userEmail}</Text>
       </HStack>
     </Box>
   );

@@ -133,12 +133,7 @@ app.on("activate", () => {
 });
 uIOhook.on("keydown", () => {
   userActivity.keyboardClickCount = userActivity.keyboardClickCount + 1;
-  console.log(
-    userActivity.keyboardClickCount,
-    "userActivity.keyboardClickCount"
-  );
 });
 uIOhook.on("click", () => {
   userActivity.mouseClickCount = userActivity.mouseClickCount + 1;
-  console.log(userActivity.mouseClickCount, "userActivity.mouseClickCount");
 });

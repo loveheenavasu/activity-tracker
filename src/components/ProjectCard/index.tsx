@@ -175,23 +175,25 @@ const ProjectCard = ({
                     {project.summary}
                   </Text>
                 </Stack>
-                {project.id === projectClientrackId.clientProjectTrackId &&
-                  userActivity.screenshot && (
-                    <Image
-                      boxSize="80px"
-                      objectFit="cover"
-                      m={"auto"}
-                      mb={"5"}
-                      src={userActivity.screenshot}
-                      alt="Dan Abramov"
-                    />
-                  )}
               </HStack>
+              <Text fontSize={".75rem"}>Last screen capture</Text>
+              {project.id === projectClientrackId.clientProjectTrackId &&
+                userActivity.screenshot && (
+                  <Image
+                    boxSize="auto"
+                    objectFit="cover"
+                    m={"auto"}
+                    mb={"5"}
+                    src={userActivity.screenshot}
+                    alt="Dan Abramov"
+                  />
+                )}
               <Textarea
                 // value={remarks}
                 // onChange={handleInutChange}
                 maxW={"100%"}
                 maxH={"5%"}
+                borderRadius={".5rem"}
                 isDisabled={
                   projectClientrackId.clientProjectTrackId !== null &&
                   (projectClientrackId.clientProjectTrackId !== project.id ||
