@@ -6,6 +6,7 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Divider,
   HStack,
   IconButton,
   Menu,
@@ -81,7 +82,7 @@ const ProjectsSummary = () => {
                 allowMultiple
                 width={"100%"}
                 mt="2"
-                _last={{ marginBottom: "5" }}
+                _last={{ marginBottom: "20" }}
               >
                 <AccordionItem borderWidth="0.063rem" borderRadius={"8px"}>
                   <h2>
@@ -94,11 +95,15 @@ const ProjectsSummary = () => {
                   </h2>
                   <AccordionPanel pb={4}>
                     {MOCK_PROJECTS_DATA.map((projectData: any) => {
+                      const projectId = localStorage.getItem(
+                        projectData.project.id
+                      );
                       if (projectData.id === item.clientId) {
                         return (
                           <>
                             <ProjectCard
                               clientId={item.clientId}
+                              projectId={projectId}
                               projectClientrackId={projectTClientrackId}
                               setProjectClientTrackId={setProjectClientTrackId}
                               setIsTracking={setIsTracking}
@@ -128,7 +133,7 @@ const ProjectsSummary = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel>
-                {projectsBySearchingClient.map((project) => {
+                {/* {projectsBySearchingClient.map((project) => {
                   return (
                     <ProjectCard
                       clientId={project.id}
@@ -141,7 +146,7 @@ const ProjectsSummary = () => {
                       isRemarks={isRemarks}
                     />
                   );
-                })}
+                })} */}
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
@@ -162,47 +167,52 @@ const ProjectsSummary = () => {
           </Text>
         )} */}
       </Stack>
-      <HStack
+
+      <Stack
         position={"absolute"}
         bottom={0}
         justifyContent={"space-between"}
         alignSelf={"end"}
         left={2}
       >
-        <Menu>
-          {({ isOpen }) => (
-            <>
-              <MenuButton
-                isActive={isOpen}
-                as={Button}
-                px={5}
-                py={2}
-                transition="all 0.2s"
-                bg={"none"}
-                _hover={{ bg: "none" }}
-                _expanded={{ bg: "none" }}
-                _focus={{ boxShadow: "none" }}
-              >
-                <IconButton
-                  icon={<IoSettingsOutline />}
-                  aria-label={"back-button"}
-                  bg="none"
-                  _hover={{ background: "none" }}
-                />
-              </MenuButton>
-              <Portal>
-                <MenuList>
-                  <MenuItem>Advance settings</MenuItem>
-                  <MenuItem onClick={() => backNavigationHandler()}>
-                    Logout
-                  </MenuItem>
-                </MenuList>
-              </Portal>
-            </>
-          )}
-        </Menu>
-        <Text color={"#2F363F"}>{userEmail}</Text>
-      </HStack>
+        <Divider width={"100vw"} />
+        <HStack>
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  px={5}
+                  py={2}
+                  transition="all 0.2s"
+                  bg={"none"}
+                  _hover={{ bg: "none" }}
+                  _expanded={{ bg: "none" }}
+                  _focus={{ boxShadow: "none" }}
+                  cursor="pointer"
+                >
+                  <IconButton
+                    icon={<IoSettingsOutline />}
+                    aria-label={"back-button"}
+                    bg="none"
+                    _hover={{ background: "none" }}
+                  />
+                </MenuButton>
+                <Portal>
+                  <MenuList>
+                    <MenuItem>Advance settings</MenuItem>
+                    <MenuItem onClick={() => backNavigationHandler()}>
+                      Logout
+                    </MenuItem>
+                  </MenuList>
+                </Portal>
+              </>
+            )}
+          </Menu>
+          <Text color={"#2F363F"}>{userEmail}</Text>
+        </HStack>
+      </Stack>
     </Box>
   );
 };

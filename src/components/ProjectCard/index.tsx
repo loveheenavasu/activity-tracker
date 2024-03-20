@@ -25,6 +25,7 @@ interface PROJECTPROP {
   projectClientrackId: any;
   setProjectClientTrackId: any;
   clientId: number;
+  projectId: any;
 }
 let seconds = 0;
 let hours = 0;
@@ -52,6 +53,7 @@ const ProjectCard = ({
   setProjectClientTrackId,
   projectClientrackId,
   isTracking,
+  projectId,
   clientId,
   setIsTracking,
 }: PROJECTPROP) => {
@@ -60,6 +62,7 @@ const ProjectCard = ({
     keyboardClickCount: 0,
     mouseClickCount: 0,
   });
+  console.log("projectId", projectId);
   const toast = useToast();
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
@@ -170,7 +173,7 @@ const ProjectCard = ({
               <HStack width={"100%"} justifyContent={"space-between"}>
                 <Text fontSize={".9rem"}>Time Tracked:</Text>
                 {project.id === projectClientrackId.clientProjectTrackId && (
-                  <Text align={"center"}>{timeTracked || "00:00:00"}</Text>
+                  <Text align={"center"}>{projectId}</Text>
                 )}
               </HStack>
               <Divider />
