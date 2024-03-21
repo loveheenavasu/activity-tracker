@@ -25,18 +25,17 @@ import ProjectCard from "../components/ProjectCard";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/Searchbar";
 const ProjectsSummary = () => {
+  const navigate = useNavigate();
   const [remarks, setRemarks] = React.useState("");
   const [search, setSearch] = React.useState("");
   const toast = useToast();
   const userEmail = localStorage.getItem("userEmail") || "";
-  console.log("search value:", search);
   const [isTracking, setIsTracking] = React.useState(false);
   const [projectTClientrackId, setProjectClientTrackId] = React.useState({
     clientTrackId: null,
     clientProjectTrackId: null,
   });
   const [isRemarks, setIsRemarks] = React.useState(false);
-  const navigate = useNavigate();
   const projectsBySearchingClient = MOCK_PROJECTS_DATA.filter((client) => {
     return (
       client.clientName.toLowerCase().includes(search.toLowerCase()) ||
@@ -44,7 +43,6 @@ const ProjectsSummary = () => {
       client.clientName.toLowerCase().endsWith(search.toLowerCase())
     );
   });
-  console.log("projectBySearching", projectsBySearchingClient);
   const handleInutChange = (e: any) => {
     setRemarks(e.target.value);
   };
@@ -76,7 +74,7 @@ const ProjectsSummary = () => {
           <SearchBar setSearch={setSearch} />
         </HStack>
         {search.length === 0 ? (
-          CLIENT_NAME.map((item: { clientId: number; client_name: string }) => {
+          CLIENT_NAME.map((item: { clientId: number; clientName: string }) => {
             return (
               <Accordion
                 allowMultiple
@@ -88,22 +86,18 @@ const ProjectsSummary = () => {
                   <h2>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
-                        {item.client_name}
+                        {item.clientName}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
                   <AccordionPanel pb={4}>
                     {MOCK_PROJECTS_DATA.map((projectData: any) => {
-                      const projectId = localStorage.getItem(
-                        projectData.project.id
-                      );
-                      if (projectData.id === item.clientId) {
+                      if (projectData.clientID === item.clientId) {
                         return (
                           <>
                             <ProjectCard
                               clientId={item.clientId}
-                              projectId={projectId}
                               projectClientrackId={projectTClientrackId}
                               setProjectClientTrackId={setProjectClientTrackId}
                               setIsTracking={setIsTracking}
@@ -133,10 +127,10 @@ const ProjectsSummary = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel>
-                {/* {projectsBySearchingClient.map((project) => {
+                {projectsBySearchingClient.map((project) => {
                   return (
                     <ProjectCard
-                      clientId={project.id}
+                      clientId={project.clientID}
                       projectClientrackId={projectTClientrackId}
                       setProjectClientTrackId={setProjectClientTrackId}
                       setIsTracking={setIsTracking}
@@ -146,7 +140,7 @@ const ProjectsSummary = () => {
                       isRemarks={isRemarks}
                     />
                   );
-                })} */}
+                })}
               </AccordionPanel>
             </AccordionItem>
           </Accordion>

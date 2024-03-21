@@ -16,7 +16,7 @@ import React from "react";
 interface PROJECTPROP {
   project: {
     id: number;
-    name: string;
+    title: string;
   }[];
   isRemarks: boolean;
   isTracking: boolean;
@@ -25,14 +25,47 @@ interface PROJECTPROP {
   projectClientrackId: any;
   setProjectClientTrackId: any;
   clientId: number;
-  projectId: any;
 }
 let seconds = 0;
 let hours = 0;
 let minutes = 0;
 let formatime: string;
-function formatTime() {
+function formatTime(initialTime = "00:00:00") {
+  console.log("initialTime::", initialTime);
+  if (initialTime === null) {
+    initialTime = "00:00:00";
+  }
+  const [initilaHours, initialMinutes, initialSeconds] = initialTime
+    .split(":")
+    .map(Number);
+  // if (initialTime) {
+  //   [initilaHours, initialMinutes, initialSeconds] = initialTime
+  //     .split(":")
+  //     .map(Number);
+  //   seconds += initialSeconds;
+  //   minutes += initialMinutes;
+  //   hours += initilaHours;
+  //   console.log(
+  //     initialMinutes,
+  //     initialSeconds,
+  //     initilaHours,
+  //     "initialminutes,initialSeconds,intialHours"
+  //   );
+  // }
+  seconds += initialSeconds;
+  minutes += initialMinutes;
+  hours += initilaHours;
+  console.log(
+    "seconds = initialSeconds + seconds;",
+    seconds,
+    (seconds += initialSeconds),
+    initialSeconds,
+    seconds
+  );
   seconds++;
+  // const totalSeconds = initialSeconds + seconds;
+  // const totalMinutes = initialMinutes + minutes;
+  // const totalHours = initilaHours + hours;
   if (seconds >= 59) {
     seconds = 0;
     minutes++;
@@ -41,9 +74,13 @@ function formatTime() {
       hours++;
     }
   }
+  // hours = totalHours;
+  // minutes = totalMinutes;
+  // seconds = totalSeconds;
   const formattedHours = hours.toString().padStart(2, "0");
   const formattedMinutes = minutes.toString().padStart(2, "0");
   const formattedSeconds = seconds.toString().padStart(2, "0");
+
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 const ProjectCard = ({
@@ -53,7 +90,6 @@ const ProjectCard = ({
   setProjectClientTrackId,
   projectClientrackId,
   isTracking,
-  projectId,
   clientId,
   setIsTracking,
 }: PROJECTPROP) => {
@@ -62,7 +98,6 @@ const ProjectCard = ({
     keyboardClickCount: 0,
     mouseClickCount: 0,
   });
-  console.log("projectId", projectId);
   const toast = useToast();
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
@@ -75,17 +110,22 @@ const ProjectCard = ({
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
     const newPath = activity?.screenshot.split("tracker-desktop")[1];
+    console.log("screenshotscreenshot", activity?.screenshot);
     const userActivityWithScreenshot = {
-      screenshot: newPath,
+      screenshot: activity?.screenshot || newPath,
       keyboardClickCount: activity.userActivity.keyboardClickCount,
       mouseClickCount: activity.userActivity.mouseClickCount,
     };
+    console.log(userActivityWithScreenshot, "userActivitywithScreenshot");
     setUserActivity(userActivityWithScreenshot);
     await window.electronAPI.resetData();
   };
   const activateTimer = async (id: number, clientID: number) => {
     if (projectClientrackId.clientProjectTrackId === id) {
-      localStorage.setItem(`${id}`, timeTracked);
+      console.log(timeTracked, "timeTrackedtimeTracked");
+      if (!timeTracked.includes("NaN")) {
+        localStorage.setItem(`${id}`, timeTracked);
+      }
       await window.electronAPI.resetData();
       clearInterval(intervalId);
       clearInterval(timerIntervalId);
@@ -134,6 +174,14 @@ const ProjectCard = ({
   return (
     <>
       {project?.map((project: any) => {
+        const trackedTime = localStorage.getItem(`${project.id}`);
+        console.log("trackedTimetrackedTime inside map", trackedTime);
+        const updateTime = formatTime(trackedTime);
+        console.log(
+          project.id,
+          "project.id from local storage",
+          localStorage.getItem(`${project.id}`)
+        );
         return (
           <Card
             style={{
@@ -147,7 +195,7 @@ const ProjectCard = ({
           >
             <CardHeader>
               <HStack justifyContent={"space-between"}>
-                <Heading size="md">{project.name}</Heading>(
+                <Heading size="md">{project.title}</Heading>(
                 <Button
                   bg={"#319795"}
                   color={"#FFFFFF"}
@@ -172,14 +220,16 @@ const ProjectCard = ({
             <CardBody>
               <HStack width={"100%"} justifyContent={"space-between"}>
                 <Text fontSize={".9rem"}>Time Tracked:</Text>
+                {/* <Text>{updateTime ? updateTime : "00:00:00"}</Text> */}
+                <Text align={"center"}>{updateTime}</Text>
                 {project.id === projectClientrackId.clientProjectTrackId && (
-                  <Text align={"center"}>{projectId}</Text>
+                  <Text align={"center"}>{updateTime}</Text>
                 )}
               </HStack>
               <Divider />
               <HStack justifyContent="space-between">
                 <Stack>
-                  <Heading size="xs" textTransform="uppercase">
+                  <Heading size="xs" textTransform="uppercase" mt="2">
                     Summary
                   </Heading>
                   <Text pt="2" fontSize="sm">

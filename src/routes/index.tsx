@@ -3,6 +3,7 @@ import Login from "../screens/Login";
 import ProjectsSummary from "../screens/ProjectsSummary";
 
 const AppRoutes = () => {
+  const isUserLoggedIn = localStorage.getItem("userEmail");
   return (
     <HashRouter>
       <Routes>
