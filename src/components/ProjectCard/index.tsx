@@ -13,6 +13,8 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setTime } from "../../store/trackCardSlice";
 interface PROJECTPROP {
   project: {
     id: number;
@@ -32,9 +34,6 @@ let minutes = 0;
 let formatime: string;
 function formatTime(initialTime = "00:00:00") {
   console.log("initialTime::", initialTime);
-  if (initialTime === null) {
-    initialTime = "00:00:00";
-  }
   const [initilaHours, initialMinutes, initialSeconds] = initialTime
     .split(":")
     .map(Number);
@@ -99,6 +98,7 @@ const ProjectCard = ({
     mouseClickCount: 0,
   });
   const toast = useToast();
+  const dispatch = useDispatch();
   const [timeTracked, setTimeTracked] = React.useState(formatime);
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
@@ -123,9 +123,8 @@ const ProjectCard = ({
   const activateTimer = async (id: number, clientID: number) => {
     if (projectClientrackId.clientProjectTrackId === id) {
       console.log(timeTracked, "timeTrackedtimeTracked");
-      if (!timeTracked.includes("NaN")) {
-        localStorage.setItem(`${id}`, timeTracked);
-      }
+      const action = { id, clientID, timeTracked };
+      dispatch(setTime(action));
       await window.electronAPI.resetData();
       clearInterval(intervalId);
       clearInterval(timerIntervalId);
@@ -174,9 +173,7 @@ const ProjectCard = ({
   return (
     <>
       {project?.map((project: any) => {
-        const trackedTime = localStorage.getItem(`${project.id}`);
-        console.log("trackedTimetrackedTime inside map", trackedTime);
-        const updateTime = formatTime(trackedTime);
+        const updateTime = formatTime(project.time);
         console.log(
           project.id,
           "project.id from local storage",
@@ -192,6 +189,7 @@ const ProjectCard = ({
               marginBottom: "1rem",
               maxWidth: "100%",
             }}
+            key={project.id}
           >
             <CardHeader>
               <HStack justifyContent={"space-between"}>
@@ -221,9 +219,11 @@ const ProjectCard = ({
               <HStack width={"100%"} justifyContent={"space-between"}>
                 <Text fontSize={".9rem"}>Time Tracked:</Text>
                 {/* <Text>{updateTime ? updateTime : "00:00:00"}</Text> */}
-                <Text align={"center"}>{updateTime}</Text>
-                {project.id === projectClientrackId.clientProjectTrackId && (
+                {/* <Text align={"center"}>{project.time}</Text> */}
+                {project.id === projectClientrackId.clientProjectTrackId ? (
                   <Text align={"center"}>{updateTime}</Text>
+                ) : (
+                  <Text align={"center"}>{project.time}</Text>
                 )}
               </HStack>
               <Divider />

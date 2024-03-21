@@ -26,6 +26,16 @@ import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/Searchbar";
 const ProjectsSummary = () => {
   const navigate = useNavigate();
+  const root = localStorage;
+  console.log(root, "rootrootrootroot");
+  const usersData = JSON.parse(localStorage.getItem("persist:root"));
+  const userDataFromLocalStorage = JSON.parse(usersData.user);
+  console.log(
+    typeof usersData,
+    JSON.parse(usersData.user),
+    userDataFromLocalStorage,
+    "usersDatausersData"
+  );
   const [remarks, setRemarks] = React.useState("");
   const [search, setSearch] = React.useState("");
   const toast = useToast();
@@ -81,8 +91,13 @@ const ProjectsSummary = () => {
                 width={"100%"}
                 mt="2"
                 _last={{ marginBottom: "20" }}
+                key={item.clientId}
               >
-                <AccordionItem borderWidth="0.063rem" borderRadius={"8px"}>
+                <AccordionItem
+                  borderWidth="0.063rem"
+                  borderRadius={"8px"}
+                  key={item.clientId}
+                >
                   <h2>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
@@ -92,7 +107,7 @@ const ProjectsSummary = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel pb={4}>
-                    {MOCK_PROJECTS_DATA.map((projectData: any) => {
+                    {userDataFromLocalStorage.map((projectData: any) => {
                       if (projectData.clientID === item.clientId) {
                         return (
                           <>
