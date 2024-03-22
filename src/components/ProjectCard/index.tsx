@@ -12,7 +12,7 @@ import {
   Textarea,
   Divider,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { setScreenShot, setTime, setRemarks } from "../../store/trackCardSlice";
 import { debounce } from "lodash";
@@ -65,14 +65,16 @@ const ProjectCard = ({
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
     const newPath = activity?.screenshot.split("tracker-desktop")[1];
+    // const pathAfterSaving = project.screenshot.split("tracker-desktop")[1];
+    console.log(project, "projectproject");
+    console.log(newPath, "newPath");
     console.log("screenshotscreenshot", activity?.screenshot);
     const userActivityWithScreenshot = {
-      screenshot: activity?.screenshot || newPath,
+      screenshot: activity?.screenshot,
       keyboardClickCount: activity.userActivity.keyboardClickCount,
       mouseClickCount: activity.userActivity.mouseClickCount,
     };
-    const screenshot = activity.screenshot;
-    const action = { ID, clientID, screenshot };
+    const action = { ID, clientID, screenshot: activity.screenshot };
     dispatch(setScreenShot(action));
     console.log(userActivityWithScreenshot, "userActivitywithScreenshot");
     setUserActivity(userActivityWithScreenshot);
@@ -149,6 +151,7 @@ const ProjectCard = ({
   return (
     <>
       {project?.map((project: any) => {
+        const pathAfterSaving = project.screenshot.split("tracker-desktop")[1];
         return (
           <Card
             style={{
@@ -208,25 +211,16 @@ const ProjectCard = ({
                 </Stack>
               </HStack>
               <Text fontSize={".75rem"}>Last screen capture</Text>
-              <Image
-                boxSize="auto"
-                objectFit="cover"
-                m={"auto"}
-                mb={"5"}
-                src={project.screenshot}
-                alt="Dan Abramov"
-              />
-              {project.id === projectClientrackId.clientProjectTrackId &&
-                userActivity.screenshot && (
-                  <Image
-                    boxSize="auto"
-                    objectFit="cover"
-                    m={"auto"}
-                    mb={"5"}
-                    src={project.screenshot}
-                    alt="Dan Abramov"
-                  />
-                )}
+              {project.screenshot && (
+                <Image
+                  boxSize="auto"
+                  objectFit="cover"
+                  m={"auto"}
+                  mb={"5"}
+                  src={pathAfterSaving}
+                  alt="projects image"
+                />
+              )}
               <Textarea
                 // value={remarks}
                 onChange={(e) => handleInputChangeDebounced(e.target.value)}

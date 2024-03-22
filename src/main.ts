@@ -10,7 +10,7 @@ console.log("MAIN_WINDOW_VITE_NAME", MAIN_WINDOW_VITE_NAME);
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 400,
-    height: 600,
+    height: 800,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -26,7 +26,7 @@ const createWindow = () => {
   }
   process.traceProcessWarnings = true;
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // async function emptyDirectory() {

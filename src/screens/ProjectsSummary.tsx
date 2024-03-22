@@ -28,7 +28,6 @@ import { useSelector } from "react-redux";
 const ProjectsSummary = () => {
   const navigate = useNavigate();
   const userDataFromLocalStorage = useSelector((state: any) => state.user);
-  const [remarks, setRemarks] = React.useState("");
   const [search, setSearch] = React.useState("");
   const toast = useToast();
   const userEmail = localStorage.getItem("userEmail") || "";
@@ -47,9 +46,6 @@ const ProjectsSummary = () => {
       );
     }
   );
-  const handleInutChange = (e: any) => {
-    setRemarks(e.target.value);
-  };
   const backNavigationHandler = () => {
     if (projectTClientrackId.clientProjectTrackId === null) {
       navigate("/");
