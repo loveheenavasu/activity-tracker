@@ -25,11 +25,31 @@ export const trackCardSlice = createSlice({
         }
       });
     },
-    // setTrack: (state, action) => {
-    //   state.user = action.payload;
-    // },
+    setScreenShot: (state, action) => {
+      state.user.forEach((client: any) => {
+        if (client.clientID === action.payload.clientID) {
+          client.project.forEach((project: any) => {
+            if (project.id === action.payload.ID) {
+              project.screenshot = action.payload.screenshot;
+            }
+          });
+        }
+      });
+    },
+    setRemarks: (state, action) => {
+      state.user.forEach((client: any) => {
+        if (client.clientID === action.payload.clientID) {
+          client.project.forEach((project: any) => {
+            if (project.id === action.payload.ID) {
+              project.remarks = action.payload.remarks;
+            }
+          });
+        }
+      });
+    },
   },
 });
-export const { setData, setTime } = trackCardSlice.actions;
+export const { setData, setTime, setScreenShot, setRemarks } =
+  trackCardSlice.actions;
 export default trackCardSlice.reducer;
 export const stateSelector = (state: any) => state || {};

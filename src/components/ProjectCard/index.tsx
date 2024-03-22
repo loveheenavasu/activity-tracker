@@ -14,7 +14,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setTime } from "../../store/trackCardSlice";
+import { setScreenShot, setTime, setRemarks } from "../../store/trackCardSlice";
+import { debounce } from "lodash";
 interface PROJECTPROP {
   project: {
     id: number;
@@ -49,7 +50,18 @@ const ProjectCard = ({
   const [timeTracked, setTimeTracked] = React.useState("00:00:00");
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
-  const trackUserActivity = async () => {
+  const handleInputChangeDebounced = debounce((value) => {
+    console.log("value", value);
+    if (value && projectClientrackId.clientProjectTrackId) {
+      const action = {
+        ID: projectClientrackId.clientProjectTrackId,
+        clientID: projectClientrackId.clientTrackId,
+        remarks: value,
+      };
+      dispatch(setRemarks(action));
+    }
+  }, 500);
+  const trackUserActivity = async (ID: number, clientID: number) => {
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
     const newPath = activity?.screenshot.split("tracker-desktop")[1];
@@ -59,6 +71,9 @@ const ProjectCard = ({
       keyboardClickCount: activity.userActivity.keyboardClickCount,
       mouseClickCount: activity.userActivity.mouseClickCount,
     };
+    const screenshot = activity.screenshot;
+    const action = { ID, clientID, screenshot };
+    dispatch(setScreenShot(action));
     console.log(userActivityWithScreenshot, "userActivitywithScreenshot");
     setUserActivity(userActivityWithScreenshot);
     await window.electronAPI.resetData();
@@ -120,7 +135,7 @@ const ProjectCard = ({
       });
       setIsTracking(true);
       const newIntervalId = setInterval(() => {
-        trackUserActivity();
+        trackUserActivity(id, clientID);
       }, 10000 * 2);
       setIntervalId(newIntervalId);
       const newTimerIntervalId = setInterval(() => {
@@ -193,6 +208,14 @@ const ProjectCard = ({
                 </Stack>
               </HStack>
               <Text fontSize={".75rem"}>Last screen capture</Text>
+              <Image
+                boxSize="auto"
+                objectFit="cover"
+                m={"auto"}
+                mb={"5"}
+                src={project.screenshot}
+                alt="Dan Abramov"
+              />
               {project.id === projectClientrackId.clientProjectTrackId &&
                 userActivity.screenshot && (
                   <Image
@@ -200,13 +223,13 @@ const ProjectCard = ({
                     objectFit="cover"
                     m={"auto"}
                     mb={"5"}
-                    src={userActivity.screenshot}
+                    src={project.screenshot}
                     alt="Dan Abramov"
                   />
                 )}
               <Textarea
                 // value={remarks}
-                // onChange={handleInutChange}
+                onChange={(e) => handleInputChangeDebounced(e.target.value)}
                 maxW={"100%"}
                 maxH={"5%"}
                 borderRadius={".5rem"}

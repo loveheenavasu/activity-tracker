@@ -8,6 +8,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "A Cross Platform Desktop Tracker",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 1002,
@@ -15,6 +16,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "A Rich text editor web application",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 1003,
@@ -22,6 +24,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Mobile application for daily productivity measuring",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 1004,
@@ -29,6 +32,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Forex trading web application",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
     ],
     clientName: "Jake Paul",
@@ -42,6 +46,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "A Online Meeting app to meet online",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 2002,
@@ -49,6 +54,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "A task assigning software for organizations",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 2003,
@@ -56,6 +62,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "An application for controlling the graphics card by Nvidia",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 2004,
@@ -64,6 +71,7 @@ export const MOCK_PROJECTS_DATA = [
           "Application for automating your message when you're not available.",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
     ],
     clientName: "Mike Tyson",
@@ -77,6 +85,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Game engine for unity games development",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 3002,
@@ -84,6 +93,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Generation 5 gaming engine",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 3003,
@@ -91,6 +101,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Jumbo jumping game maked by using pygame",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 3004,
@@ -98,6 +109,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "An application for 3D visualization of home decoration",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
     ],
     clientName: "Brack Obama",
@@ -111,6 +123,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "A application for connecting system admin across world",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 4002,
@@ -118,6 +131,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Gardening webapp in nextjs",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 4003,
@@ -126,6 +140,7 @@ export const MOCK_PROJECTS_DATA = [
           "Old furniture refurbishing  as like new one platform application",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 4004,
@@ -133,6 +148,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Formula one racing cars selling web application",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
     ],
     clientName: "Mike Thompson",
@@ -147,6 +163,7 @@ export const MOCK_PROJECTS_DATA = [
           "Meet your doctor at your door step with a  single application",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 5002,
@@ -154,6 +171,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Ecommerce store for kindergarden kids",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 5003,
@@ -161,6 +179,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Web3 wallet connecting appliaction",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
       {
         id: 5004,
@@ -168,6 +187,7 @@ export const MOCK_PROJECTS_DATA = [
         summary: "Movie downloader extension",
         remarks: "Note yet",
         time: "00:00:00",
+        screenshot: "",
       },
     ],
     clientName: "Corey Bell",
