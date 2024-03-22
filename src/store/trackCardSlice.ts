@@ -12,6 +12,9 @@ export const trackCardSlice = createSlice({
       state.user = action.payload;
     },
     setTime: (state, action) => {
+      // state.user = state.user[action.payload.clientID]["project"][
+      //   action.payload.id
+      // ]["time"] = action.payload.timeTracked;
       state.user.forEach((client: any) => {
         if (client.clientID === action.payload.clientID) {
           client.project.forEach((project: any) => {

@@ -19,23 +19,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { CLIENT_NAME, MOCK_PROJECTS_DATA } from "../mock-data/index";
+import { CLIENT_NAME } from "../mock-data/index";
 import { IoSettingsOutline } from "react-icons/io5";
 import ProjectCard from "../components/ProjectCard";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/Searchbar";
+import { useSelector } from "react-redux";
 const ProjectsSummary = () => {
   const navigate = useNavigate();
-  const root = localStorage;
-  console.log(root, "rootrootrootroot");
-  const usersData = JSON.parse(localStorage.getItem("persist:root"));
-  const userDataFromLocalStorage = JSON.parse(usersData.user);
-  console.log(
-    typeof usersData,
-    JSON.parse(usersData.user),
-    userDataFromLocalStorage,
-    "usersDatausersData"
-  );
+  const userDataFromLocalStorage = useSelector((state: any) => state.user);
   const [remarks, setRemarks] = React.useState("");
   const [search, setSearch] = React.useState("");
   const toast = useToast();
@@ -46,13 +38,15 @@ const ProjectsSummary = () => {
     clientProjectTrackId: null,
   });
   const [isRemarks, setIsRemarks] = React.useState(false);
-  const projectsBySearchingClient = MOCK_PROJECTS_DATA.filter((client) => {
-    return (
-      client.clientName.toLowerCase().includes(search.toLowerCase()) ||
-      client.clientName.toLowerCase().startsWith(search.toLowerCase()) ||
-      client.clientName.toLowerCase().endsWith(search.toLowerCase())
-    );
-  });
+  const projectsBySearchingClient = userDataFromLocalStorage.filter(
+    (client: any) => {
+      return (
+        client.clientName.toLowerCase().includes(search.toLowerCase()) ||
+        client.clientName.toLowerCase().startsWith(search.toLowerCase()) ||
+        client.clientName.toLowerCase().endsWith(search.toLowerCase())
+      );
+    }
+  );
   const handleInutChange = (e: any) => {
     setRemarks(e.target.value);
   };
@@ -142,7 +136,7 @@ const ProjectsSummary = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel>
-                {projectsBySearchingClient.map((project) => {
+                {projectsBySearchingClient.map((project: any) => {
                   return (
                     <ProjectCard
                       clientId={project.clientID}

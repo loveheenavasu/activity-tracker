@@ -12,7 +12,7 @@ import {
   Textarea,
   Divider,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTime } from "../../store/trackCardSlice";
 interface PROJECTPROP {
@@ -27,60 +27,6 @@ interface PROJECTPROP {
   projectClientrackId: any;
   setProjectClientTrackId: any;
   clientId: number;
-}
-let seconds = 0;
-let hours = 0;
-let minutes = 0;
-let formatime: string;
-function formatTime(initialTime = "00:00:00") {
-  console.log("initialTime::", initialTime);
-  const [initilaHours, initialMinutes, initialSeconds] = initialTime
-    .split(":")
-    .map(Number);
-  // if (initialTime) {
-  //   [initilaHours, initialMinutes, initialSeconds] = initialTime
-  //     .split(":")
-  //     .map(Number);
-  //   seconds += initialSeconds;
-  //   minutes += initialMinutes;
-  //   hours += initilaHours;
-  //   console.log(
-  //     initialMinutes,
-  //     initialSeconds,
-  //     initilaHours,
-  //     "initialminutes,initialSeconds,intialHours"
-  //   );
-  // }
-  seconds += initialSeconds;
-  minutes += initialMinutes;
-  hours += initilaHours;
-  console.log(
-    "seconds = initialSeconds + seconds;",
-    seconds,
-    (seconds += initialSeconds),
-    initialSeconds,
-    seconds
-  );
-  seconds++;
-  // const totalSeconds = initialSeconds + seconds;
-  // const totalMinutes = initialMinutes + minutes;
-  // const totalHours = initilaHours + hours;
-  if (seconds >= 59) {
-    seconds = 0;
-    minutes++;
-    if (minutes >= 59) {
-      minutes = 0;
-      hours++;
-    }
-  }
-  // hours = totalHours;
-  // minutes = totalMinutes;
-  // seconds = totalSeconds;
-  const formattedHours = hours.toString().padStart(2, "0");
-  const formattedMinutes = minutes.toString().padStart(2, "0");
-  const formattedSeconds = seconds.toString().padStart(2, "0");
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 const ProjectCard = ({
   project,
@@ -97,15 +43,12 @@ const ProjectCard = ({
     keyboardClickCount: 0,
     mouseClickCount: 0,
   });
+  console.log(project, "projectproject");
   const toast = useToast();
   const dispatch = useDispatch();
-  const [timeTracked, setTimeTracked] = React.useState(formatime);
+  const [timeTracked, setTimeTracked] = React.useState("00:00:00");
   const [intervalId, setIntervalId] = React.useState(null);
   const [timerIntervalId, setTimerIntervalId] = React.useState(null);
-  console.log(
-    "data for tracking from local storage",
-    localStorage.getItem(`${projectClientrackId.clientProjectTrackId}`)
-  );
   const trackUserActivity = async () => {
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
@@ -120,9 +63,31 @@ const ProjectCard = ({
     setUserActivity(userActivityWithScreenshot);
     await window.electronAPI.resetData();
   };
-  const activateTimer = async (id: number, clientID: number) => {
+  const updateTimer = () => {
+    setTimeTracked((prevTime) => {
+      const [hours, minutes, seconds] = prevTime.split(":").map(Number);
+      let newSeconds = seconds + 1;
+      let newMinutes = minutes;
+      let newHours = hours;
+      if (newSeconds === 60) {
+        newSeconds = 0;
+        newMinutes++;
+        if (newMinutes === 60) {
+          newMinutes = 0;
+          newHours++;
+        }
+      }
+      return `${String(newHours).padStart(2, "0")}:${String(
+        newMinutes
+      ).padStart(2, "0")}:${String(newSeconds).padStart(2, "0")}`;
+    });
+  };
+  const activateTimer = async (
+    id: number,
+    clientID: number,
+    projectTme: string
+  ) => {
     if (projectClientrackId.clientProjectTrackId === id) {
-      console.log(timeTracked, "timeTrackedtimeTracked");
       const action = { id, clientID, timeTracked };
       dispatch(setTime(action));
       await window.electronAPI.resetData();
@@ -132,7 +97,7 @@ const ProjectCard = ({
         clientTrackId: null,
         clientProjectTrackId: null,
       });
-      setTimeTracked("00:00:00");
+      setTimeTracked(null);
       setIsTracking(false);
       setUserActivity({
         screenshot: "",
@@ -140,9 +105,7 @@ const ProjectCard = ({
         mouseClickCount: 0,
       });
     } else {
-      seconds = 0;
-      minutes = 0;
-      hours = 0;
+      setTimeTracked(projectTme);
       setProjectClientTrackId({
         clientTrackId: clientID,
         clientProjectTrackId: id,
@@ -160,10 +123,8 @@ const ProjectCard = ({
         trackUserActivity();
       }, 10000 * 2);
       setIntervalId(newIntervalId);
-
       const newTimerIntervalId = setInterval(() => {
-        const newFormatime = formatTime();
-        setTimeTracked(newFormatime);
+        updateTimer();
       }, 1000);
       setTimerIntervalId(newTimerIntervalId);
     }
@@ -173,12 +134,6 @@ const ProjectCard = ({
   return (
     <>
       {project?.map((project: any) => {
-        const updateTime = formatTime(project.time);
-        console.log(
-          project.id,
-          "project.id from local storage",
-          localStorage.getItem(`${project.id}`)
-        );
         return (
           <Card
             style={{
@@ -199,7 +154,9 @@ const ProjectCard = ({
                   color={"#FFFFFF"}
                   _hover={{ color: "none" }}
                   size="md"
-                  onClick={() => activateTimer(project.id, clientId)}
+                  onClick={() =>
+                    activateTimer(project.id, clientId, project.time)
+                  }
                   isDisabled={
                     projectClientrackId.clientProjectTrackId !== null &&
                     (projectClientrackId.clientProjectTrackId !== project.id ||
@@ -218,10 +175,8 @@ const ProjectCard = ({
             <CardBody>
               <HStack width={"100%"} justifyContent={"space-between"}>
                 <Text fontSize={".9rem"}>Time Tracked:</Text>
-                {/* <Text>{updateTime ? updateTime : "00:00:00"}</Text> */}
-                {/* <Text align={"center"}>{project.time}</Text> */}
                 {project.id === projectClientrackId.clientProjectTrackId ? (
-                  <Text align={"center"}>{updateTime}</Text>
+                  <Text align={"center"}>{timeTracked}</Text>
                 ) : (
                   <Text align={"center"}>{project.time}</Text>
                 )}
