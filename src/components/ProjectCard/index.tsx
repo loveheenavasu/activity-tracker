@@ -64,10 +64,6 @@ const ProjectCard = ({
   const trackUserActivity = async (ID: number, clientID: number) => {
     const activity = await window.electronAPI.getUserActivity();
     console.log(activity, "activityactivityactivityactvityactivity");
-    const newPath = activity?.screenshot.split("tracker-desktop")[1];
-    // const pathAfterSaving = project.screenshot.split("tracker-desktop")[1];
-    console.log(project, "projectproject");
-    console.log(newPath, "newPath");
     console.log("screenshotscreenshot", activity?.screenshot);
     const userActivityWithScreenshot = {
       screenshot: activity?.screenshot,
