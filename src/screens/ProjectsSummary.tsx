@@ -173,6 +173,7 @@ const ProjectsSummary = () => {
         justifyContent={"space-between"}
         alignSelf={"end"}
         left={2}
+        maxW={"215px"}
       >
         <Divider width={"100vw"} />
         <HStack>
@@ -200,7 +201,7 @@ const ProjectsSummary = () => {
                 </MenuButton>
                 <Portal>
                   <MenuList>
-                    <MenuItem>Advance settings</MenuItem>
+                    <MenuItem>Advanced settings</MenuItem>
                     <MenuItem onClick={() => backNavigationHandler()}>
                       Logout
                     </MenuItem>
